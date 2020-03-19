@@ -3,7 +3,14 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'echo "Hello world!"'
+                withAWS(region:'us-west-2', credentials:'aws-static') {
+                    s3Upload(
+                        pathStyleAccessEnabled: true,
+                        payloadSigningEnabled: true,
+                        file:'index.html',
+                        bucket:'nano-devops-03'
+                    )
+                }
             }
         }
     }
